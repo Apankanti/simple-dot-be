@@ -44,6 +44,16 @@ export class AuthService extends PassportStrategy(Strategy) {
       throw new UnauthorizedException('Invalid email or password');
     }
   }
+
+  async validate(payload) {
+    const { id } = payload;
+    const user = await this.userRepository.findById(id);
+
+    if (!user) {
+      throw new UnauthorizedException('login first');
+    }
+    return user;
+  }
 }
 
 // new implementation running correctly

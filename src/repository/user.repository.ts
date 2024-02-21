@@ -1,11 +1,9 @@
-// user.repository.ts
-
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import * as bcrypt from 'bcryptjs';
+import { LoginDto } from 'src/api/auth/dtos/login.dto';
+import { SignUpDto } from 'src/api/auth/dtos/signUp.dto';
 import { User } from 'src/models/user/user.model';
-import { SignUpDto } from 'src/auth/dtos/signUp.dto';
-import { LoginDto } from 'src/auth/dtos/login.dto';
 
 @Injectable()
 export class UserRepository {
@@ -32,14 +30,15 @@ export class UserRepository {
     if (!user) {
       throw new NotFoundException('User not found');
     }
-    const isPasswordValid = await bcrypt.compare(
-      password,
-      user.dataValues.password,
-    );
+    const isPasswordValid = await bcrypt.compare(password, user.password);
     console.log(isPasswordValid, user);
     if (!isPasswordValid) {
       throw new NotFoundException('Invalid credentials');
     }
     return user;
+  }
+
+  async findById(id: string): Promise<User> {
+    return this.userModel.findByPk(id);
   }
 }

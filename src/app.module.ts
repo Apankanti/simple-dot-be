@@ -1,14 +1,14 @@
 import { Module } from '@nestjs/common';
-import { AuthModule } from './auth/auth.module';
 import { SequelizeModule } from '@nestjs/sequelize';
 import { User } from './models/user/user.model';
-import { AuthController } from './auth/auth.controller';
-import { AuthService } from './auth/auth.service';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import { UserModule } from './user/user.module';
 import { RepositoryModule } from './repository';
 import { JwtService } from '@nestjs/jwt';
 import configuration from '../config/app.config';
+import { AuthController } from './api/auth/auth.controller';
+import { AuthModule } from './api/auth/auth.module';
+import { AuthService } from './api/auth/auth.service';
+import { UserModule } from './api/user/user.module';
 
 @Module({
   imports: [

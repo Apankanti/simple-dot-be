@@ -5,14 +5,10 @@ import { UserRepository } from 'src/repository/user.repository';
 import { UserService } from './user.service';
 import { UserController } from './user.controller';
 import { User } from 'src/models/User/user.model';
+import { AuthModule } from '../auth/auth.module';
 @Module({
-  imports: [
-    SequelizeModule.forFeature([User]),
-  ],
+  imports: [AuthModule, SequelizeModule.forFeature([User])],
   controllers: [UserController],
-  providers: [
-    UserService,
-    UserRepository,
-  ],
+  providers: [UserService, UserRepository],
 })
 export class UserModule {}
