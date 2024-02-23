@@ -45,24 +45,7 @@ export class AuthService extends PassportStrategy(Strategy) {
     }
   }
 
-  async validate(payload) {
-    const { id } = payload;
-    const user = await this.userRepository.findById(id);
-
-    if (!user) {
-      throw new UnauthorizedException('login first');
-    }
-    return user;
+  generateLoginToken(userId: string, expiryLimit: string) {
+    return this.jwtService.sign({ userId }, { expiresIn: expiryLimit });
   }
 }
-
-// new implementation running correctly
-// async signUp(signUpDto: SignUpDto): Promise<{ token: string }> {
-//   const user = await this.userRepository.signUp(signUpDto);
-//   const token = await this.jwtService.signAsync(
-//     { id: user.id },
-//     { secret: 'yourSecretKey', expiresIn: '1h' },
-//   );
-//   console.log('Generated Token:', token);
-//   return { token };
-// }

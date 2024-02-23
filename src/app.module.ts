@@ -5,10 +5,14 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { RepositoryModule } from './repository';
 import { JwtService } from '@nestjs/jwt';
 import configuration from '../config/app.config';
-import { AuthController } from './api/auth/auth.controller';
-import { AuthModule } from './api/auth/auth.module';
-import { AuthService } from './api/auth/auth.service';
-import { UserModule } from './api/user/user.module';
+import { AuthToken, ModelsModule, Product } from './models';
+import { ProductModule } from './api/v1/products/products.module';
+import { UserModule } from './api/v1/user/user.module';
+import { AuthController } from './common/auth/auth.controller';
+import { AuthModule } from './common/auth/auth.module';
+import { AuthService } from './common/auth/auth.service';
+import { ScheduleModule } from '@nestjs/schedule';
+import { APIModule } from './api/v1/api-v1.routes';
 
 @Module({
   imports: [
@@ -24,10 +28,15 @@ import { UserModule } from './api/user/user.module';
       username: 'postgres',
       password: 'root',
       database: 'SimpleEcommerce',
-      models: [User],
       autoLoadModels: true,
+      logging: false,
+      models: [User, Product, AuthToken],
     }),
+    ScheduleModule.forRoot(),
+    ModelsModule,
+    ...APIModule,
     UserModule,
+    ProductModule,
     RepositoryModule,
     AuthModule,
   ],

@@ -2,7 +2,7 @@
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.createTable('products_table', {
+    await queryInterface.createTable('tbl_products', {
       id: {
         type: Sequelize.UUID,
         primaryKey: true,
@@ -13,7 +13,7 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: false,
       },
-      productType: {
+      product_type: {
         type: Sequelize.STRING,
         allowNull: false,
       },
@@ -21,7 +21,7 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: false,
       },
-      descriptionFit: {
+      description_fit: {
         type: Sequelize.JSONB,
         allowNull: false,
       },
@@ -37,12 +37,12 @@ module.exports = {
         type: Sequelize.DECIMAL(10, 2),
         allowNull: false,
       },
-      createdAt: {
+      created_at: {
         type: Sequelize.DATE,
         allowNull: false,
         defaultValue: Sequelize.fn('NOW'),
       },
-      updatedAt: {
+      updated_at: {
         type: Sequelize.DATE,
         allowNull: false,
         defaultValue: Sequelize.fn('NOW'),

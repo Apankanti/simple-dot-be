@@ -1,8 +1,10 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import * as bcrypt from 'bcryptjs';
-import { LoginDto } from 'src/api/auth/dtos/login.dto';
-import { SignUpDto } from 'src/api/auth/dtos/signUp.dto';
+import { FindOptions, Transaction } from 'sequelize';
+import { LoginDto } from 'src/common/auth/dtos/login.dto';
+import { SignUpDto } from 'src/common/auth/dtos/signUp.dto';
+import { CreateUserParams } from 'src/models/user';
 import { User } from 'src/models/user/user.model';
 
 @Injectable()
@@ -11,6 +13,13 @@ export class UserRepository {
     @InjectModel(User)
     private readonly userModel: typeof User,
   ) {}
+
+  async createUser(
+    user: CreateUserParams,
+    createUserTransaction: Transaction,
+  ): Promise<User> {
+    return this.userModel.create(user, { transaction: createUserTransaction });
+  }
 
   async signUp(signUpDto: SignUpDto): Promise<User> {
     const { firstName, lastName, email, password } = signUpDto;
@@ -22,6 +31,12 @@ export class UserRepository {
       email,
       password: hashedPassword,
     });
+  }
+
+  async getHashPass(password: string): Promise<string> {
+    const passSalt = await bcrypt.genSalt();
+    const passHash = await bcrypt.hash(password, passSalt);
+    return passHash;
   }
 
   async logIn(loginDto: LoginDto): Promise<User> {
@@ -37,8 +52,10 @@ export class UserRepository {
     }
     return user;
   }
-
-  async findById(id: string): Promise<User> {
-    return this.userModel.findByPk(id);
+  async findOneByClause(clause: FindOptions<User>) {
+    return this.userModel.findOne(clause);
   }
+  // async findById(id: string): Promise<User> {
+  //   return this.userModel.findByPk(id);
+  // }
 }

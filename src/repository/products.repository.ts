@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
-import { AddProductDTO } from 'src/api/products/dto/create.produtcs.dto';
+import { CreateProductParams } from 'src/models/products';
 import { Product } from 'src/models/products/products.model';
 
 @Injectable()
@@ -10,20 +10,22 @@ export class ProductRepository {
     private readonly productModel: typeof Product,
   ) {}
 
-  async addProducts(addProductDto: AddProductDTO): Promise<Product> {
-    const { descriptionFit, ...rest } = addProductDto;
-    const size: any = {};
-    for (const key in descriptionFit.size) {
-      size[key] = descriptionFit.size[key];
+  async addProducts(addProduct: CreateProductParams): Promise<Product> {
+    return this.productModel.create(addProduct);
+  }
+
+  async addMultipleProducts(
+    products: CreateProductParams[],
+  ): Promise<Product[]> {
+    try {
+      const createdProducts = await this.productModel.bulkCreate(products, {
+        returning: true,
+      });
+      return createdProducts as Product[];
+    } catch (error) {
+      console.error('Sequelize Validation Error:', error.errors);
+      throw error;
     }
-    const transformedDto = {
-      ...rest,
-      descriptionFit: {
-        ...descriptionFit,
-        size,
-      },
-    };
-    return this.productModel.create(transformedDto);
   }
 
   async findById(id: string): Promise<Product> {

@@ -8,7 +8,31 @@ import {
   ArrayMinSize,
 } from 'class-validator';
 import { Type } from 'class-transformer';
-import { SizeDTO } from './addSize.dto';
+
+class SizeDto {
+  @IsString()
+  width: string;
+
+  @IsString()
+  length: string;
+}
+
+export class SizeDto1 {
+  XS?: SizeDto;
+  S?: SizeDto;
+  M?: SizeDto;
+  L?: SizeDto;
+  XL?: SizeDto;
+  XXL?: SizeDto;
+}
+
+class DescriptionFitDto {
+  description: string;
+  size?: SizeDto1;
+  sleeveLength: string;
+  fit: string;
+  neckline: string;
+}
 
 export class AddProductDTO {
   @IsString()
@@ -29,14 +53,8 @@ export class AddProductDTO {
 
   @IsNotEmpty()
   @ValidateNested()
-  @Type(() => SizeDTO)
-  descriptionFit: {
-    description: string;
-    size: SizeDTO;
-    sleevelength: string;
-    fit: string;
-    neckline: string;
-  };
+  @Type(() => DescriptionFitDto)
+  descriptionFit: DescriptionFitDto;
 
   @IsString()
   @IsNotEmpty()
