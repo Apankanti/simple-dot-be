@@ -5,3 +5,10 @@ export const EXCEPTION = {
   UPDATE_SAME_PASSWORD: 'You are trying to update the same password!',
   USER_NOT_EXIST: 'user does not exist',
 };
+
+export enum Environment {
+  DEVELOPMENT = 'development',
+  PRODUCTION = 'production',
+  TEST = 'test',
+  STAGING = 'staging',
+}

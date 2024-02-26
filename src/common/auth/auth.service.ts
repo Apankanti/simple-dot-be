@@ -23,7 +23,6 @@ export class AuthService extends PassportStrategy(Strategy) {
   }
 
   async signUp(signUpDto: SignUpDto): Promise<{ token: string }> {
-    console.log(this.configService.get<string>('jwt.secret'));
     const user = await this.userRepository.signUp(signUpDto);
     const token = await this.jwtService.signAsync(
       { id: user.id },

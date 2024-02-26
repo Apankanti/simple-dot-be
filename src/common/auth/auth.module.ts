@@ -1,7 +1,6 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { PassportModule } from '@nestjs/passport';
-
 import { AuthService } from './auth.service';
 import { JwtAuthModule } from './jwt.module';
 import { RepositoryModule } from 'src/repository';
