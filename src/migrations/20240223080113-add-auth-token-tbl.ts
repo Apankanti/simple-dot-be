@@ -11,10 +11,9 @@ module.exports = {
           primaryKey: true,
         },
         user_id: {
-          // using snake_case for foreign key reference
           type: Sequelize.UUID,
           references: {
-            model: 'tbl_user', // Assuming your user table is named 'tbl_user'
+            model: 'tbl_user',
             key: 'id',
           },
         },

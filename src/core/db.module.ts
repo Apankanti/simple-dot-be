@@ -25,7 +25,15 @@ interface DatabaseConfig {
         }
 
         const replication: ReplicationOptions = {
-          read: [],
+          read: [
+            {
+              database: database.name,
+              host: database.host,
+              password: database.password,
+              port: database.port,
+              username: database.user,
+            },
+          ],
           write: {
             database: database.name,
             host: database.host,

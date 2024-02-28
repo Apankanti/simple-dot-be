@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import * as bcrypt from 'bcryptjs';
 import { FindOptions, Transaction } from 'sequelize';
@@ -55,7 +59,33 @@ export class UserRepository {
   async findOneByClause(clause: FindOptions<User>) {
     return this.userModel.findOne(clause);
   }
-  // async findById(id: string): Promise<User> {
-  //   return this.userModel.findByPk(id);
+  async findById(id: string): Promise<User> {
+    return this.userModel.findByPk(id);
+  }
+
+  async findAll() {
+    return this.userModel.findAll();
+  }
+
+  // async removeByEmail(email: string) {
+  //   const user = await this.userModel.findOne({ where: { email } });
+
+  //   if (!user) {
+  //     throw new NotFoundException(`User with email ${email} not found`);
+  //   }
+
+  //   await this.userModel.destroy({ where: { email } });
+  //   return `User with email ${email} has been successfully removed`;
   // }
+
+  async findByEmail(email: string): Promise<User> {
+    const user = await this.userModel.findOne<User>({
+      where: {
+        email: email.toLowerCase(),
+      },
+    });
+
+    if (!user) throw new BadRequestException(`Email does not exist`);
+    return user;
+  }
 }

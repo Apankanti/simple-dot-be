@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { SignUpDto } from 'src/common/auth/dtos/signUp.dto';
+import { CreateUserParams } from 'src/models/user';
 import { User } from 'src/models/user/user.model';
 import { UserRepository } from 'src/repository/user.repository';
 
@@ -12,18 +13,18 @@ export class UserService {
   }
 
   findAll() {
-    return `This action returns all user`;
+    return this.userRepository.findAll();
   }
 
   findOne(id: number) {
     return `This action returns a #${id} user`;
   }
 
-  // update(id: number, updateUserDto: UpdateUserDto) {
-  //   return `This action updates a #${id} user`;
-  // }
+  update(email: CreateUserParams) {
+    return `This action updates a #${email} user`;
+  }
 
-  remove(id: number) {
-    return `This action removes a #${id} user`;
+  remove(email: string) {
+    return this.userRepository.findByEmail(email);
   }
 }

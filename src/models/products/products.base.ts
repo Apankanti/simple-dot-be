@@ -9,7 +9,6 @@ import {
   UpdatedAt,
 } from 'sequelize-typescript';
 
-// Adjusted Size interface
 interface Size {
   XS?: {
     width: string;
