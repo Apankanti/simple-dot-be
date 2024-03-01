@@ -6,7 +6,6 @@ import configuration from './config/app.config';
 import { ModelsModule } from './models';
 import { ProductModule } from './api/v1/products/products.module';
 import { UserModule } from './api/v1/user/user.module';
-import { AuthController } from './common/auth/auth.controller';
 import { AuthModule } from './common/auth/auth.module';
 import { AuthService } from './common/auth/auth.service';
 import { ScheduleModule } from '@nestjs/schedule';
@@ -31,7 +30,6 @@ import { DbModule } from './core/db.module';
     RepositoryModule,
     AuthModule,
   ],
-  controllers: [AuthController],
   providers: [ConfigService, AuthService, JwtService],
 })
 export class AppModule {}

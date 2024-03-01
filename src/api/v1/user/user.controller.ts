@@ -1,32 +1,50 @@
 import { Controller, Post, Body, Get, Delete } from '@nestjs/common';
+import {
+  ApiTags,
+  ApiOperation,
+  ApiOkResponse,
+  ApiBadRequestResponse,
+} from '@nestjs/swagger';
 import { UserService } from './user.service';
 import { SignUpDto } from 'src/common/auth/dtos/signUp.dto';
 
-@Controller()
+@Controller('users')
+@ApiTags('Users Information')
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
   @Post()
+  @ApiOperation({ summary: 'Create a new user' })
+  @ApiOkResponse({
+    description: 'User created successfully',
+    type: SignUpDto,
+  })
+  @ApiBadRequestResponse({
+    description: 'Bad request. Please check the request payload.',
+  })
   create(@Body() createUserDto: SignUpDto) {
     return this.userService.createUser(createUserDto);
   }
 
-  @Get('/users')
+  @Get()
+  @ApiOperation({ summary: 'Get all users' })
+  @ApiOkResponse({
+    description: 'List of users retrieved successfully',
+    type: SignUpDto,
+  })
   findAll() {
     return this.userService.findAll();
   }
 
-  // @Get(':id')
-  // findOne(@Param('id') id: string) {
-  //   return this.userService.findOne(+id);
-  // }
-
-  // @Patch(':id')
-  // update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
-  //   return this.userService.update(+id, updateUserDto);
-  // }
-
-  @Delete('/delete')
+  @Delete()
+  @ApiOperation({ summary: 'Delete a user by email' })
+  @ApiOkResponse({
+    description: 'User deleted successfully',
+    type: SignUpDto,
+  })
+  @ApiBadRequestResponse({
+    description: 'Bad request. Please check the request payload.',
+  })
   remove(@Body() email: string) {
     return this.userService.remove(email);
   }

@@ -8,6 +8,7 @@ import {
 } from 'src/common/constants/routes.constants';
 import { ProductModule } from './products/products.module';
 import { RegistrationModule } from './registration';
+import { AddToWishListModule } from './add-to-wish-list/add-to-wish-list.module';
 
 export const routes: Routes = [
   {
@@ -29,6 +30,10 @@ export const routes: Routes = [
         path: ROUTES.PUBLIC,
         module: RegistrationModule,
       },
+      {
+        path: ROUTES.PUBLIC,
+        module: AddToWishListModule,
+      },
     ],
   },
   {
@@ -41,4 +46,5 @@ export const APIModule = [
   LoginModule,
   UserModule,
   RegistrationModule,
+  AddToWishListModule,
 ];

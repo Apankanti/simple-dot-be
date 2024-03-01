@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { SignUpDto } from 'src/common/auth/dtos/signUp.dto';
 import { CreateUserParams } from 'src/models/user';
 import { User } from 'src/models/user/user.model';
@@ -10,6 +10,15 @@ export class UserService {
 
   async createUser(createUserRequestDto: SignUpDto): Promise<User> {
     return this.userRepository.signUp(createUserRequestDto);
+  }
+  async findById(userId: string): Promise<User> {
+    const user = await this.userRepository.findById(userId);
+
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+
+    return user;
   }
 
   findAll() {

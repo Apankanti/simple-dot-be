@@ -22,6 +22,24 @@ export class AuthService extends PassportStrategy(Strategy) {
     });
   }
 
+  tokenExpired(token: string): boolean {
+    try {
+      this.jwtService.verify(token);
+      return false;
+    } catch (error) {
+      return true;
+    }
+  }
+
+  async validate(userId: string): Promise<any> {
+    try {
+      console.log(userId);
+      return this.userRepository.findById(userId);
+    } catch (error) {
+      throw new UnauthorizedException('User not found');
+    }
+  }
+
   async signUp(signUpDto: SignUpDto): Promise<{ token: string }> {
     const user = await this.userRepository.signUp(signUpDto);
     const token = await this.jwtService.signAsync(
